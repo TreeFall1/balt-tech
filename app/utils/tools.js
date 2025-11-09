@@ -1,10 +1,13 @@
 import axios from "axios";
 import {createClient} from "@supabase/supabase-js";
 // import { supabase } from '@/app/utils/supabase';
+
+
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRld3hvYnZibnl4Zmx5bXZveXhrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1ODU2NDAwMywiZXhwIjoyMDc0MTQwMDAzfQ.ecNgi2naZrENI4KO0Ad8kHzL4apMLpUjapknWuivx9U"
+    process.env.SUPABASE_SERVICE_ROLE_KEY
 );
+
 
 export const supabaseStorage = "https://dewxobvbnyxflymvoyxk.supabase.co/storage/v1/object/public"
 

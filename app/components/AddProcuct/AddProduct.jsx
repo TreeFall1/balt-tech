@@ -88,7 +88,6 @@ export default function AddProductForm({ isEdit = false, productId = null }) {
   };
 
   const setAsMain = (img) => {
-    console.log(img)
     setMainImage(img);
   };
 
@@ -156,6 +155,8 @@ export default function AddProductForm({ isEdit = false, productId = null }) {
           setPreviewUrls([]);
           setMainImage(null);
           setDeletedImages([]);
+        } else{
+          sessionStorage.removeItem(`product_images_${productId}`)
         }
       } else {
         setMessage("❌ Ошибка при сохранении товара");

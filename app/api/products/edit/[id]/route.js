@@ -21,7 +21,6 @@ export async function PUT(req, { params }) {
     const paramsJSON = formData.get("params");
     const images = formData.getAll("images"); // File[]
     const mainImage = formData.get("mainImage"); // имя, url или File
-    console.log(mainImage);
 
     const productParams = JSON.parse(paramsJSON || "[]");
 
