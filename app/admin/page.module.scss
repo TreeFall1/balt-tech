@@ -10,6 +10,9 @@
   border: 1px solid var(--orange-100);
   -webkit-box-shadow: 0px 0px 16px 5px rgba(0,0,0,0.15);
   box-shadow: 0px 0px 16px 5px rgba(0,0,0,0.15);
+  max-width: 540px;
+  width: 100%;
+
 
   .logoContainer{
     display: flex;
@@ -32,7 +35,7 @@
   form{
     display: flex;
     flex-direction: column;
-    width: 512px;
+    width: 100%;
 
     input{
       margin-bottom: 24px;
@@ -47,18 +50,14 @@
 
 .adminPanel {
   width: 100%;
-  //margin: 0 auto;
-  //background: #1c1c1c;
   border-radius: 16px;
   padding: 24px;
-  //color: #fff;
 }
 
 .tabs {
   display: flex;
   gap: 12px;
   margin-bottom: 20px;
-  background-color: #fff4ee;
   padding: 8px;
   border-radius: 8px;
 }
@@ -99,7 +98,7 @@
   width: 100%;
   .listContainer{
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 16px;
   }
 
@@ -116,3 +115,17 @@
   }
 }
 
+@media screen and (max-width: 768px) {
+  .adminPanel{
+    padding: 4px;
+  }
+
+  .tabContent{
+    padding: 0;
+  }
+
+  .tabs{
+    flex-direction: column;
+    padding: 0;
+  }
+}

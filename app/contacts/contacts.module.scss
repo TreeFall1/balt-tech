@@ -21,3 +21,9 @@
     font-weight: 500;
   }
 }
+
+@media screen and (max-width: 860px) {
+  .mapPlaceholder iframe{
+    width: 100%;
+  }
+}

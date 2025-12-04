@@ -6,12 +6,15 @@ import styles from "./page.module.scss";
 import ProductCard from "@/app/components/ProductCard/ProductCard";
 import { fetchProducts } from "@/app/utils/tools";
 import { catalogData } from "@/app/catalog/data";
+import {ListFilter} from "lucide-react";
 
 export default function CatalogPage(props) {
   const { categoryId } = use(props.params);
   const router = useRouter();
   const searchParams = useSearchParams();
   const title = catalogData.find((el, id) => id + 1 === +categoryId)?.title || "";
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Товары
   const [mockProducts, setMockProducts] = useState([]);
@@ -34,6 +37,13 @@ export default function CatalogPage(props) {
   const toggleFilter = (key) => {
     setOpenFilters((prev) => ({ ...prev, [key]: !prev[key] }));
   };
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 780);
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
 
   // === 🧠 Кэширование товаров ===
@@ -83,6 +93,8 @@ export default function CatalogPage(props) {
 
         const key = param.name.trim();
         let value = param.value.trim();
+
+        if(key === "Описание") return;
 
         const numeric = Number(value.replace(",", "."));
         if (!isNaN(numeric)) value = numeric;
@@ -172,21 +184,24 @@ export default function CatalogPage(props) {
 
   // Обновление query-параметров при изменении фильтров
   useEffect(() => {
-    const params = new URLSearchParams();
+    const currentParams = new URLSearchParams(searchParams.toString());
+    const newParams = new URLSearchParams();
 
-    if (priceRange[0] > priceLimits[0]) params.set("minPrice", priceRange[0]);
-    if (priceRange[1] < priceLimits[1]) params.set("maxPrice", priceRange[1]);
+    if (priceRange[0] > priceLimits[0]) newParams.set("minPrice", String(priceRange[0]));
+    if (priceRange[1] < priceLimits[1]) newParams.set("maxPrice", String(priceRange[1]));
 
     Object.keys(selectedFilters).forEach((key) => {
       if (selectedFilters[key].length) {
-        params.set(key, selectedFilters[key].join(","));
+        newParams.set(key, selectedFilters[key].join(","));
       }
     });
 
-    if (sortBy) params.set("sort", sortBy);
+    if (sortBy) newParams.set("sort", sortBy);
 
-    router.replace(`/catalog/${categoryId}?${params.toString()}`);
-  }, [priceRange, selectedFilters, sortBy, categoryId, router, priceLimits]);
+    if (currentParams.toString() !== newParams.toString()) {
+      router.replace(`/catalog/${categoryId}?${newParams.toString()}`);
+    }
+  }, [priceRange, selectedFilters, sortBy, categoryId, router, priceLimits, searchParams]);
 
   // Тогглер для значений фильтра
   const toggleFilterValue = (key, value) => {
@@ -239,8 +254,11 @@ export default function CatalogPage(props) {
 
   return (
       <main className={styles.catalogPage}>
+        {isSidebarOpen && isMobile && (
+            <div className={styles.overlay} onClick={() => setIsSidebarOpen(false)}></div>
+        )}
         {/* Фильтры */}
-        <aside className={styles.sidebar}>
+        <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ""}`}>
           <h2 className={styles.sidebarTitle}>Фильтры</h2>
 
           {/* Цена */}
@@ -321,22 +339,34 @@ export default function CatalogPage(props) {
         <main className={styles.main}>
           <div className={styles.catalogHeader}>
             <h1>{title}</h1>
-            <div className={styles.sortWrapper}>
-              <label>Сортировка:</label>
-              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                <option value="">По умолчанию</option>
-                <option value="price-asc">Цена ↑</option>
-                <option value="price-desc">Цена ↓</option>
-                <option value="title">Название (А–Я)</option>
-              </select>
+            <div className={styles.controls}>
+              <div className={styles.sortWrapper}>
+                <label>Сортировка:</label>
+                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                  <option value="">По умолчанию</option>
+                  <option value="price-asc">Цена ↑</option>
+                  <option value="price-desc">Цена ↓</option>
+                  <option value="title">Название (А–Я)</option>
+                </select>
+              </div>
+              {isMobile && (
+                  <button
+                      className={`${styles.mobileFilterBtn} border`}
+                      onClick={() => setIsSidebarOpen(true)}
+                  >
+                    <ListFilter size={18} />
+                  </button>
+              )}
             </div>
           </div>
 
           <div className={styles.productsGrid}>
             {mockProducts.length === 0 ? (
-                <div className="loader"></div>
+                    <div className={styles.loaderWrapper}>
+                      <div className="loader"></div>
+                    </div>
             ) : (
-                filteredProducts.map((p) => <ProductCard key={p.id} {...p} />)
+                filteredProducts.map((p) => <ProductCard isMobile={isMobile} key={p.id} {...p} />)
             )}
           </div>
         </main>

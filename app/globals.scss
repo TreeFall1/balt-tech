@@ -35,6 +35,14 @@ button{
   &:hover{
     background: color.adjust($accent, $blackness: 10%)
   }
+
+  @media screen and (max-width: 1024px) {
+    padding: 6px 14px;
+  }
+
+  @media screen and (max-width: 860px) {
+    font-size: 14px;
+  }
 }
 
 
@@ -58,6 +66,14 @@ input, textarea, select{
     outline: none;
     border: 1px solid var(--light-orange);
   }
+
+  @media screen and (max-width: 1024px) {
+    padding: 6px 14px;
+  }
+
+  @media screen and (max-width: 860px) {
+    font-size: 14px;
+  }
 }
 
 
@@ -67,6 +83,10 @@ main{
   max-width: 1640px;
   width: 100%;
   flex: 1;
+
+  @media screen and (max-width: 768px) {
+    padding: 8px;
+  }
 }
 
 /* HTML: <div class="loader"></div> */

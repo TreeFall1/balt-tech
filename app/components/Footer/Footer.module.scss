@@ -5,6 +5,10 @@ $accent: #e46221;
   color: #fff;
   padding: 2rem 1rem 1rem;
   margin-top: 2rem;
+
+  @media screen and (max-width: 860px) {
+    margin-bottom: 54px;
+  }
 }
 
 .container {
@@ -14,6 +18,10 @@ $accent: #e46221;
   flex-wrap: wrap;
   gap: 1rem;
   position: relative;
+
+  @media screen and (max-width: 1024px) {
+    flex-direction: column;
+  }
 }
 
 .logo {
@@ -28,6 +36,14 @@ $accent: #e46221;
   position: absolute;
   left: 50%;
   transform: translate(-50%, -50%);
+  
+  @media screen and (max-width: 1024px) {
+    position: unset;
+    transform: unset;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .link {

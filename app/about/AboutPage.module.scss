@@ -50,6 +50,14 @@ $accent: #e46221;
     height: 100%;
     width: auto;
   }
+  
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+
+    img{
+      width: 100%;
+    }
+  }
 }
 
 .cards {

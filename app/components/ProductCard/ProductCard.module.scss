@@ -8,6 +8,11 @@ $accent: #e46221;
   transition: 150ms;
   cursor: pointer;
   position: relative;
+  flex-shrink: 0;
+
+  @media screen and (max-width: 860px) {
+    width: 200px;
+  }
 
 
   &:hover{
@@ -20,16 +25,20 @@ $accent: #e46221;
 
 .imageWrapper {
   position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .image {
   display: block;
-  width: 100%;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   pointer-events: none;
   transition: 150ms;
-  height: 240px;
+  width: 100%;
+  height: auto;
 }
 
 .tag {
@@ -72,10 +81,15 @@ $accent: #e46221;
 }
 
 .price {
-  margin: 0 0 1rem;
+  margin-bottom: 16px;
   font-size: 18px;
   font-weight: 600;
   color: $accent;
+
+  @media screen and (max-width: 860px) {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
 }
 
 .params {
@@ -119,4 +133,43 @@ $accent: #e46221;
       height: 38px;
     }
   }
+}
+
+.cardContainer.mobile{
+  width: 100%;
+
+  .info{
+    padding: 8px;
+  }
+
+  a{
+    display: flex;
+
+    .imageWrapper{
+      width: auto;
+      flex-shrink: 0;
+      padding: 8px;
+
+      img{
+        width: auto;
+        height: 20vw;
+      }
+    }
+  }
+
+
+  @media screen and (max-width: 660px) {
+    a{
+      flex-direction: column;
+
+      .imageWrapper{
+
+        img{
+          height: 50vw;
+          max-height: 220px;
+        }
+      }
+    }
+  }
+
 }

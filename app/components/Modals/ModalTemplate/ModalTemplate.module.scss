@@ -67,3 +67,19 @@
   from { transform: scale(0.95); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
+
+@media screen and (max-width: 768px) {
+  .modal{
+    margin: 0;
+    padding: 8px;
+    max-height: 95vh;
+  }
+
+  .overlay{
+    padding: 0;
+  }
+
+  .header h3{
+    font-size: 14px;
+  }
+}

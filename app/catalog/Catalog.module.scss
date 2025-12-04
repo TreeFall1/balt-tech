@@ -16,6 +16,11 @@
   display: grid;
   gap: 24px;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+
+  @media screen and (max-width: 425px) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+
+  }
 }
 
 .catalog-card {
@@ -45,6 +50,7 @@
     object-fit: contain;
     margin-bottom: 15px;
     mix-blend-mode: darken;
+    min-width: unset;
   }
 
   h2 {

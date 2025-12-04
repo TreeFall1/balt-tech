@@ -33,7 +33,7 @@ export default function ProductCard(props) {
   const now = Date.now();
 
   return (
-      <div className={styles.cardContainer}>
+      <div className={`${styles.cardContainer} ${props.isMobile ? styles.mobile : ""}`}>
         {props.isAdmin && (
             <div className={styles.data} onClick={modalHandler} id={props.id}>
               <Image src={'/settings.svg'} alt={'Settings'} width={32} height={32}/>

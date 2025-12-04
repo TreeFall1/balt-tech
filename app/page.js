@@ -5,18 +5,31 @@ import ProductCard from "@/app/components/ProductCard/ProductCard";
 import {Mail, Phone} from 'lucide-react';
 import {fetchProducts} from "@/app/utils/tools";
 import {useEffect, useState} from "react";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Scrollbar, Mousewheel, FreeMode} from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/scrollbar';
+
 
 export default function Home() {
   const [mockProducts, setMockProducts] = useState([]);
+  const [cardWidth, setCardWidth] = useState(240)
 
   useEffect(()=>{
     const load = async () => {
-      const products = await fetchProducts({limit: 6});
-      setMockProducts(products);
+      try {
+        const products = await fetchProducts({limit: 10});
+        setMockProducts(products);
+      } catch (error) {
+        console.error("Failed to load products:", error);
+      }
     }
-
     load();
+
+    setCardWidth(window.innerWidth > 860 ? 240 : 200);
   }, []);
+
+
 
   return (
       <>
@@ -42,13 +55,28 @@ export default function Home() {
           <section className={styles.productsSection}>
             <div className={styles.container}>
               <h2>Новая продукция и акции</h2>
-              <div className={styles.productsGrid}>
+              <Swiper
+                  spaceBetween={16}
+                  slidesPerView="auto"
+                  modules={[Scrollbar, FreeMode, Mousewheel]}
+                  scrollbar={{ draggable: true }}
+                  freeMode={true}
+                  mousewheel={true}
+                  style={{padding: "16px 0"}}
+                  lazy={{
+                    loadPrevNext: true,
+                    loadPrevNextAmount: 9,
+                  }}
+
+              >
                 {mockProducts && mockProducts.map((el, id) => {
                   return (
-                      <ProductCard key={id} {...el} img={el.img} />
+                      <SwiperSlide style={{ width: cardWidth, maxHeight: "400px"}} key={id}>
+                        <ProductCard {...el} img={el.img} />
+                      </SwiperSlide>
                   )
                 })}
-              </div>
+              </Swiper>
               <div className={styles.catalogButtonWrapper}>
                 <a href={'/catalog'} className={styles.primaryButton}>Перейти в каталог</a>
               </div>

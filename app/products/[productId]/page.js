@@ -11,7 +11,6 @@ export default function ProductPage(props) {
   const [productData, setProductData] = useState(null);
   const [images, setImages] = useState([]);
   const [description, setDescription] = useState(null);
-  const now = Date.now();
 
 
   const imageHandler = (e) => {
@@ -25,7 +24,7 @@ export default function ProductPage(props) {
       const product = await fetchProducts({id: productId});
       setDescription(product["product_params"].find(el=>(el.name === "Описание")));
       setProductData(product);
-      setCurrentImage(product['main_image'] ? `${supabaseStorage}/products/${productId}/${product['main_image']}?v=${now}` : `${supabaseStorage}/products/${productId}/1.jpg?v=${now}`)
+      setCurrentImage(product['main_image'] ? `${supabaseStorage}/products/${productId}/${product['main_image']}` : `${supabaseStorage}/products/${productId}/1.jpg`)
     }
 
     async function loadImages() {
@@ -34,7 +33,7 @@ export default function ProductPage(props) {
     }
     loadImages();
     load();
-  }, []);
+  }, [productId]);
 
 
   return (
@@ -56,7 +55,7 @@ export default function ProductPage(props) {
                   <div className={styles.thumbs}>
                     {images.map((el, id) => {
                       return (
-                          <Image key={el} onClick={imageHandler} data-image={`${el}?v=${now}`} src={`${el}?v=${now}`} alt={`thumb${id}`} width={160} height={160} />
+                          <Image key={el} onClick={imageHandler} data-image={el} src={el} alt={`thumb${id}`} width={160} height={160} />
                       )
                     })}
                   </div>
@@ -134,6 +133,12 @@ export default function ProductPage(props) {
                       </div>
                   )}
                 </div>
+              </div>
+              {/* Скрытый блок для предзагрузки изображений */}
+              <div style={{ display: 'none' }}>
+                {images.map((img) => (
+                    <img key={`preload-${img}`} src={img} alt="preload" />
+                ))}
               </div>
             </div>
         ) : (

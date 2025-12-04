@@ -21,6 +21,10 @@
       align-items: center;
       font-weight: 500;
 
+      @media screen and (max-width: 1024px) {
+        padding: 6px 12px;
+      }
+
       a{
         display: flex;
         gap: 8px;
@@ -31,6 +35,27 @@
           color: var(--light-orange);
         }
       }
+
+      .links{
+        display: flex;
+        gap: 16px;
+        font-size: 14px;
+
+        @media screen and (max-width: 1024px) {
+          font-size: 12px;
+          gap: 14px
+        }
+      }
+
+      @media screen and (max-width: 1024px) {
+        nav a{
+          font-size: 14px;
+        }
+      }
+    }
+    
+    @media screen and (max-width: 860px) {
+      display: none;
     }
   }
 
@@ -44,6 +69,14 @@
     align-items: center;
     justify-content: space-between;
     gap: 32px;
+
+    @media screen and (max-width: 1024px) {
+      padding: 12px;
+    }
+
+    @media screen and (max-width: 860px) {
+      display: none;
+    }
   }
 
   .logo-container{
@@ -59,6 +92,33 @@
       align-items: center;
       gap: 12px;
     }
+    
+    @media screen and (max-width: 1024px) {
+      a{
+        gap: 8px;
+      }
+
+      .logo{
+        width: 26px;
+        height: 26px;
+      }
+
+      .logo-text{
+        width: 180px;
+      }
+    }
+
+    @media screen and (max-width: 860px) {
+      .logo{
+        width: 22px;
+        height: 22px;
+      }
+
+      .logo-text{
+        width: 160px;
+      }
+
+    }
   }
 
 
@@ -66,10 +126,13 @@
     margin-left: 16px;
     display: flex;
     align-items: center;
+
+    @media screen and (max-width: 1024px) {
+      margin-left: 0;
+    }
   }
 
   .search-container{
-    margin: 0 32px;
     width: 100%;
     display: flex;
 
@@ -83,5 +146,32 @@
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
+
+  }
+
+  //MOBILE
+
+  .main.mobile{
+    display: none;
+    gap: 12px;
+    padding: 8px;
+
+    @media screen and (max-width: 860px) {
+      display: flex;
+    }
+
+    @media screen and (max-width: 520px) {
+      display: block;
+
+      .logo-container{
+        margin-bottom: 16px;
+      }
+    }
+
+    .search-container{
+      font-size: 14px;
+    }
+
   }
 }
+

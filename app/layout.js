@@ -2,6 +2,7 @@ import "./globals.scss";
 import {Header} from "@/app/components/Header/Header";
 import {Montserrat} from "next/font/google";
 import Footer from "@/app/components/Footer/Footer";
+import {MobileMenu} from "@/app/components/MobileMenu/MobileMenu";
 
 
 const montserrat  = Montserrat({
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
       <body className={`antialiased`}>
       <Header />
         {children}
+      <MobileMenu />
       <Footer />
       </body>
     </html>

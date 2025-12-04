@@ -12,6 +12,8 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('add'); // 'add' | 'list'
   const [products, setProducts] = useState(null);
   const [allProducts, setAllProducts] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
 
   const loadProducts = async () => {
     let products = await fetchProducts();
@@ -23,6 +25,10 @@ export default function AdminPage() {
   useEffect(() => {
     const isAdmin = sessionStorage.getItem("isAdmin");
     if (isAdmin) setIsLoggedIn(true);
+    const handleResize = () => setIsMobile(window.innerWidth <= 780);
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
 
   }, []);
 
@@ -144,7 +150,7 @@ export default function AdminPage() {
                     {!products?.length ? (
                         <div className="loader"></div>
                     ) : (
-                        products.map((p) => <ProductCard isAdmin={true} key={p.id} {...p} />)
+                        products.map((p) => <ProductCard isMobile={isMobile} isAdmin={true} key={p.id} {...p} />)
                     )}
                   </div>
                 </div>

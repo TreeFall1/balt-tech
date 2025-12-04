@@ -1,6 +1,7 @@
 .productPage {
   font-family: "Montserrat", sans-serif;
   padding: 40px;
+  max-width: 1640px;
 }
 
 .mainContent {
@@ -30,6 +31,7 @@
     gap: 8px;
     img {
       border: 1px solid #ddd;
+      object-fit: contain;
       border-radius: 6px;
       cursor: pointer;
       transition: border-color 0.2s;
@@ -164,5 +166,57 @@
 
   div{
 
+  }
+}
+
+@media (max-width: 1024px) {
+  .productPage {
+    padding: 16px;
+  }
+
+  .mainContent {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .gallery {
+    .mainImage {
+      height: 400px;
+    }
+
+    .thumbs {
+      overflow-x: auto;
+      padding-bottom: 8px; /* For scrollbar visibility */
+      img {
+        height: 100px;
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  .info {
+    gap: 16px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .priceSection .price {
+    font-size: 28px;
+  }
+
+  .specs {
+    margin-top: 16px;
+  }
+
+  .tabs {
+    .tabHeaders {
+      gap: 0;
+      button {
+        flex: 1;
+        text-align: center;
+      }
+    }
   }
 }
