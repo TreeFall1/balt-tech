@@ -1,7 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [new URL("https://dewxobvbnyxflymvoyxk.supabase.co/**")],
+    remotePatterns: [
+        new URL("https://dewxobvbnyxflymvoyxk.supabase.co/**"),
+      {
+        protocol: 'https',
+        hostname: 'dewxobvbnyxflymvoyxk.supabase.co',
+        pathname: '/storage/v1/object/public/**'
+      }
+    ],
     domains: ["dewxobvbnyxflymvoyxk.supabase.co"]
   },
   env: {

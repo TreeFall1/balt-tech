@@ -28,6 +28,7 @@ export default function ProductCard(props) {
 
   useEffect(() => {
     setMainImage(props["main_image"] ? `${props["main_image"]}?v=${now}` : `1.jpg?v=${now}`);
+
   }, []);
 
   const now = Date.now();
@@ -40,11 +41,12 @@ export default function ProductCard(props) {
             </div>
         )}
         <a href={`/products/${props.id}`}>
+
           <div className={styles.imageWrapper}>
             <Image
-                src={mainImage ? `${supabaseStorage}/products/${props.id}/${mainImage}?v=${now}` : '/image-loader.svg'}
+                src={mainImage ? `${supabaseStorage}/products/${props.id}/${mainImage}` : '/image-loader.svg'}
                   alt={props.title}
-                  className={styles.image}
+                  className={`${styles.image}`}
                   width={256}
                   height={256}
               />
