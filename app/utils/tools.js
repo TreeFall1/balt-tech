@@ -67,8 +67,39 @@ export async function getProductImages(productId) {
   return imageUrls;
 }
 
+export async function fetchFavoriteProductIds() {
+  try {
+    const response = await axios.get("/api/favorite");
 
+    return response.data.product_ids;
+  } catch (error) {
+    console.error("Error fetching favorite products:", error);
+    return [];
+  }
+}
 
+export async function addToFavorites(productId) {
+  try {
+    const response = await axios.post("/api/favorite/add", {
+      product_id: productId,
+    });
 
+    return response.data; // добавленная строка
+  } catch (error) {
+    console.error("Error adding to favorites:", error);
+    return null;
+  }
+}
 
+export async function removeFromFavorites(productId) {
+  try {
+    const response = await axios.delete("/api/favorite/remove", {
+      data: { product_id: productId },
+    });
 
+    return response.data; // { success: true, deleted: [...] }
+  } catch (error) {
+    console.error("Error removing from favorites:", error);
+    return null;
+  }
+}

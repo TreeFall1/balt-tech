@@ -122,6 +122,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+  gap: 8px;
 
   h1 {
     font-size: 32px;
@@ -224,11 +225,6 @@
     font-size: 13px;
   }
 
-  .catalogHeader {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
 
   .controls{
     width: 100%;
@@ -242,4 +238,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media screen and (max-width: 1024px) {
+  .catalogHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+
+    .searchWrapper{
+      width: 100%;
+    }
+  }
 }

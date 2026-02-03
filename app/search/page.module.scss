@@ -1,0 +1,32 @@
+.listContainer{
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 240px);
+  gap: 16px;
+  //justify-content: center;
+  @media screen and (max-width: 860px) {
+    grid-template-columns: repeat(auto-fill, 200px);
+  }
+
+  @media screen and (max-width: 780px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.noResults {
+  grid-column: 1 / -1; /* Занимает всю ширину грид-контейнера */
+  text-align: center;
+  padding: 48px 24px;
+  color: #888;
+  h3 {
+    font-size: 1.5rem;
+  }
+}
+
+.loaderContainer {
+  grid-column: 1 / -1; /* Занимает всю ширину грид-контейнера */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 24px;
+}

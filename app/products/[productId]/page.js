@@ -3,6 +3,7 @@ import {use, useEffect, useState} from "react";
 import styles from "./page.module.scss";
 import Image from "next/image";
 import {fetchProducts, getProductImages, supabaseStorage} from "@/app/utils/tools";
+import {OrderModal} from "@/app/components/Modals/OrderModal/OrderModal";
 
 export default function ProductPage(props) {
   const {productId} = use(props.params);
@@ -11,6 +12,11 @@ export default function ProductPage(props) {
   const [productData, setProductData] = useState(null);
   const [images, setImages] = useState([]);
   const [description, setDescription] = useState(null);
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+
+  const orderModalHandler = ()=>{
+    setIsOrderModalOpen(!isOrderModalOpen)
+  }
 
 
   const imageHandler = (e) => {
@@ -38,6 +44,7 @@ export default function ProductPage(props) {
 
   return (
       <>
+        {isOrderModalOpen && <OrderModal product={productData?.title} id={productData?.id} isOpen={isOrderModalOpen} closeModal={orderModalHandler} /> }
         {productData ? (
             <div className={styles.productPage}>
               <div className={styles.mainContent}>
@@ -74,7 +81,7 @@ export default function ProductPage(props) {
                   <div className={styles.priceSection}>
                     <span className={styles.price}>{productData.price}</span>
                   </div>
-                    <button className={styles.orderButton}>Заказать по телефону</button>
+                    <button onClick={orderModalHandler} className={styles.orderButton}>Заказать по телефону</button>
                   <div className={styles.specs}>
                     <h2>Характеристики</h2>
                     <table className={styles.specsTable}>

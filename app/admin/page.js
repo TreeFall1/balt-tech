@@ -18,6 +18,7 @@ export default function AdminPage() {
   const loadProducts = async () => {
     let products = await fetchProducts();
     products.sort((a, b) => a.id - b.id);
+    console.log(products);
     setProducts(products);
     setAllProducts(products);
   }

@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./page.module.scss";
 import ProductCard from "@/app/components/ProductCard/ProductCard";
 import { fetchProducts } from "@/app/utils/tools";
+import { Search } from "@/app/components/Search/Search";
 import { catalogData } from "@/app/catalog/data";
 import {ListFilter} from "lucide-react";
 
@@ -30,6 +31,9 @@ export default function CatalogPage(props) {
 
   // Сортировка
   const [sortBy, setSortBy] = useState("");
+
+  // Поисковый запрос для локального поиска
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Открытые фильтры
   const [openFilters, setOpenFilters] = useState({ price: true });
@@ -216,6 +220,11 @@ export default function CatalogPage(props) {
   // Фильтрация и сортировка
   const filteredProducts = useMemo(() => {
     let products = mockProducts.filter((product) => {
+      // ✅ фильтруем по поисковому запросу (по названию товара)
+      if (searchQuery && !product.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false;
+      }
+
       // ✅ фильтруем по названию категории
       if (product.category?.trim()?.toLowerCase() !== title.trim().toLowerCase()) {
         return false;
@@ -250,7 +259,7 @@ export default function CatalogPage(props) {
     }
 
     return products;
-  }, [mockProducts, priceRange, selectedFilters, sortBy]);
+  }, [mockProducts, priceRange, selectedFilters, sortBy, searchQuery, title]);
 
   return (
       <main className={styles.catalogPage}>
@@ -329,6 +338,7 @@ export default function CatalogPage(props) {
                 Object.keys(selectedFilters).forEach((key) => (resetSelected[key] = []));
                 setSelectedFilters(resetSelected);
                 setSortBy("");
+                setSearchQuery(""); // ✅ Сбрасываем поисковый запрос
               }}
           >
             Сбросить
@@ -339,6 +349,10 @@ export default function CatalogPage(props) {
         <main className={styles.main}>
           <div className={styles.catalogHeader}>
             <h1>{title}</h1>
+            <div className={styles.searchWrapper}>
+              {/* Используем onSearch для локальной фильтрации */}
+              <Search onSearch={setSearchQuery} queryValue={searchQuery} />
+            </div>
             <div className={styles.controls}>
               <div className={styles.sortWrapper}>
                 <label>Сортировка:</label>

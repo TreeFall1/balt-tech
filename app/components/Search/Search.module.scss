@@ -1,0 +1,25 @@
+.search-container{
+  width: 100%;
+  display: flex;
+  position: relative;
+  z-index: 100;
+
+  input{
+    width: 100%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    position: relative;
+    z-index: 100;
+  }
+
+  button{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    position: relative;
+    z-index: 100;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+  }
+}

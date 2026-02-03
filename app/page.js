@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from "./HomePage.module.scss";
 import ProductCard from "@/app/components/ProductCard/ProductCard";
 import {Mail, Phone} from 'lucide-react';
-import {fetchProducts} from "@/app/utils/tools";
+import {fetchFavoriteProductIds, fetchProducts} from "@/app/utils/tools";
 import {useEffect, useState} from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Scrollbar, Mousewheel, FreeMode} from 'swiper/modules';
@@ -15,18 +15,40 @@ export default function Home() {
   const [mockProducts, setMockProducts] = useState([]);
   const [cardWidth, setCardWidth] = useState(240)
 
-  useEffect(()=>{
+  useEffect(() => {
     const load = async () => {
       try {
-        const products = await fetchProducts({limit: 10});
-        setMockProducts(products);
-      } catch (error) {
-        console.error("Failed to load products:", error);
-      }
-    }
-    load();
+        // 1) Получаем IDs избранных товаров
+        const favoriteIds = await fetchFavoriteProductIds(); // [43, 64, 77, ...]
 
-    setCardWidth(window.innerWidth > 860 ? 240 : 200);
+        if (!favoriteIds || !favoriteIds.length) {
+          setMockProducts([]);
+          setCardWidth(window.innerWidth > 860 ? 240 : 200);
+          return;
+        }
+
+        // 2) Для каждого ID запрашиваем товар
+        const productPromises = favoriteIds.map((id) =>
+            fetchProducts({ id })
+        );
+
+        // Параллельно дожидаемся всех запросов
+        const productsResults = await Promise.all(productPromises);
+
+        // 3) Фильтруем null/ошибочные ответы и расплющиваем, если API может вернуть массив
+        const products = productsResults
+            .filter(Boolean); // оставляем только truthy (убираем null)
+
+        setMockProducts(products);
+
+        // 4) Ширина карточек
+        setCardWidth(window.innerWidth > 860 ? 240 : 200);
+      } catch (error) {
+        console.error("Failed to load favorite products:", error);
+      }
+    };
+
+    load();
   }, []);
 
 
@@ -69,13 +91,15 @@ export default function Home() {
                   }}
 
               >
-                {mockProducts && mockProducts.map((el, id) => {
+                {mockProducts !== [] ? mockProducts.map((el, id) => {
                   return (
                       <SwiperSlide style={{ width: cardWidth, maxHeight: "400px"}} key={id}>
                         <ProductCard {...el} img={el.img} />
                       </SwiperSlide>
                   )
-                })}
+                }) : (
+                    <div className={'loader'}></div>
+                )}
               </Swiper>
               <div className={styles.catalogButtonWrapper}>
                 <a href={'/catalog'} className={styles.primaryButton}>Перейти в каталог</a>

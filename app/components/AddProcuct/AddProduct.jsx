@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./AddProduct.module.scss";
-import { fetchProducts, getProductImages } from "@/app/utils/tools";
+import {
+  addToFavorites,
+  fetchFavoriteProductIds,
+  fetchProducts,
+  getProductImages,
+  removeFromFavorites
+} from "@/app/utils/tools";
 import DeleteButton from "@/app/components/DeleteButton/DeleteButton";
 
 export default function AddProductForm({ isEdit = false, productId = null }) {
@@ -12,6 +18,7 @@ export default function AddProductForm({ isEdit = false, productId = null }) {
   const [category, setCategory] = useState("");
   const [tag, setTag] = useState("");
   const [description, setDescription] = useState("");
+  const [isRecommend, setIsRecommend] = useState("no");
   const [params, setParams] = useState([{ name: "", value: "" }]);
 
   const [newImages, setNewImages] = useState([]);
@@ -48,6 +55,9 @@ export default function AddProductForm({ isEdit = false, productId = null }) {
                 ? imageUrls.find((url) => url.endsWith(data.main_image))
                 : imageUrls[0] || null
         );
+        fetchFavoriteProductIds().then(res => {
+          setIsRecommend(res.includes(productId) ? "yes" : "no")
+        })
       } catch (err) {
         console.error("Ошибка загрузки товара:", err);
         setMessage("❌ Ошибка загрузки данных товара");
@@ -141,6 +151,13 @@ export default function AddProductForm({ isEdit = false, productId = null }) {
             },
           });
 
+      if(isRecommend === "yes"){
+        if(!(await fetchFavoriteProductIds()).includes(productId))
+        await addToFavorites(productId);
+      } else{
+        await removeFromFavorites(productId)
+      }
+
       if (response.status === 200 && !response.data.error) {
         setMessage(isEdit ? "✅ Товар обновлён!" : "✅ Товар добавлен!");
         if (!isEdit) {
@@ -229,6 +246,17 @@ export default function AddProductForm({ isEdit = false, productId = null }) {
               className={styles.textarea}
               rows={4}
           />
+          <div className="">
+            <h3 className={styles.subtitle}>Рекомедовать?</h3>
+            <select
+                className={styles.select}
+                value={isRecommend}
+                onChange={(e) => setIsRecommend(e.target.value)}
+            >
+              <option value={'yes'}>Да</option>
+              <option value={"no"}>Нет</option>
+            </select>
+          </div>
 
           <div>
             <h3 className={styles.subtitle}>Характеристики</h3>

@@ -2,6 +2,7 @@
 const nextConfig = {
   images: {
     unoptimized: true,
+    //ОТКЛЮЧИТЬ НА ХОСТИНГЕ
     remotePatterns: [
       {
         protocol: 'https',

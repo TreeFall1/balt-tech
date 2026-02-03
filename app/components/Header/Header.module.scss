@@ -5,7 +5,7 @@
 .header{
   -webkit-box-shadow: 0px 1px 15px 5px rgba(0, 0, 0, .1);
   box-shadow: 0px 1px 15px 5px rgba(0, 0, 0, .1);
-  position: relative;
+  position: relative; // z-index не будет работать без этого
 
   .info{
     background-color: #333;
@@ -135,16 +135,21 @@
   .search-container{
     width: 100%;
     display: flex;
+    position: relative;
 
     input{
       width: 100%;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
+      position: relative;
+
     }
 
    button{
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
+      position: relative;
+
     }
 
   }
@@ -175,3 +180,22 @@
   }
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 90; // Ниже хедера, но выше остального контента
+  animation: fadeIn 200ms ease-out;
+}
+
+//.search-container.searchActive {
+//  z-index: 100; // Поднимаем хедер над оверлеем
+//}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

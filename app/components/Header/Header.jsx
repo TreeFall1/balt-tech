@@ -2,18 +2,34 @@
 import s from './Header.module.scss'
 import Image from 'next/image'
 import {Mail, MapPin, Phone} from "lucide-react";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
+import {Search} from "@/app/components/Search/Search";
+import {OrderModal} from "@/app/components/Modals/OrderModal/OrderModal";
 
 
 export const Header = ()=>{
   const [iconsSize, setIconsSize] = useState(18);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
   useEffect(() => {
     setIconsSize(window.innerWidth > 1024 ? 18 : 16)
   }, []);
 
+  const headerClasses = useMemo(() => [
+    s["search-container"],
+    isSearchActive ? s.searchActive : ''
+  ].join(' '), [isSearchActive]);
+
+  const orderModalHandler = ()=>{
+    setIsOrderModalOpen(!isOrderModalOpen)
+  }
+
   return(
-      <header className={s['header']}>
+      <>
+        {/*{(isSearchActive) && <div className={s.overlay} onClick={() => setIsSearchActive(false)} />}*/}
+        {isOrderModalOpen && <OrderModal isOpen={isOrderModalOpen} closeModal={orderModalHandler} /> }
+        <header className={s['header']}>
         <div className={s['info']}>
           <div className={s['container']}>
             <div className={'flex items-center'}>
@@ -40,10 +56,9 @@ export const Header = ()=>{
                        height={28} width={220}/>
               </a>
             </div>
-          <div className={s['search-container']}>
-            <input className={s['search']} type="text" placeholder={'Поиск по товарам'}/>
-            <button>Найти</button>
-          </div>
+            <div className={headerClasses}>
+              <Search onFocus={() => setIsSearchActive(true)} onBlur={() => setIsSearchActive(false)} />
+            </div>
         </div>
         <div className={`${s['main']}`}>
           <div className={s['logo-container']}>
@@ -56,12 +71,12 @@ export const Header = ()=>{
               <button>Каталог</button>
             </a>
           </div>
-          <div className={s['search-container']}>
-            <input className={s['search']} type="text" placeholder={'Поиск по товарам'}/>
-            <button>Найти</button>
+          <div className={`${headerClasses}`}>
+            <Search onFocus={() => setIsSearchActive(true)} onBlur={() => setIsSearchActive(false)} />
           </div>
-          <button className={`border ${s['application-btn']}`}>Заказать звонок</button>
+          <button onClick={orderModalHandler} className={`border ${s['application-btn']}`}>Заказать звонок</button>
         </div>
       </header>
+      </>
   )
 }
