@@ -1,12 +1,14 @@
 "use client";
 
-import {useEffect, useState} from "react";
-import { useSearchParams } from 'next/navigation'
-import {Search} from "@/app/components/Search/Search";
+import { Suspense, useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Search } from "@/app/components/Search/Search";
 import ProductCard from "@/app/components/ProductCard/ProductCard";
-import s from './page.module.scss'
+import s from './page.module.scss';
 
-export default function SearchPage() {
+
+// Separate the logic into a child component
+function SearchPageContent() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
@@ -22,7 +24,7 @@ export default function SearchPage() {
   }, []);
 
   return (
-      <main>
+      <>
         <Search
             setResults={setResults}
             setLoading={setLoading}
@@ -43,6 +45,16 @@ export default function SearchPage() {
               results.map((p) => <ProductCard isMobile={isMobile} key={p.id} {...p} />)
           )}
         </div>
+      </>
+  );
+}
+
+export default function SearchPage() {
+  return (
+      <main>
+        <Suspense fallback={(<div className={'loader'}></div>)}>
+          <SearchPageContent />
+        </Suspense>
       </main>
   );
 }
