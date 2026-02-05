@@ -5,6 +5,7 @@ import ModalTemplate from "@/app/components/Modals/ModalTemplate/ModalTemplate";
 import styles from "@/app/HomePage.module.scss";
 import { Mail, Phone } from "lucide-react";
 import { useState } from "react";
+import { submitOrderForm } from "@/app/utils/tools";
 
 export const OrderModal = (props) => {
   const [loading, setLoading] = useState(false);
@@ -13,28 +14,16 @@ export const OrderModal = (props) => {
     e.preventDefault();
     setLoading(true);
 
-    const formData = new FormData(e.target);
-
-    const data = Object.fromEntries(formData.entries());
-
     try {
-      const res = await fetch("/api/mail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const result = await submitOrderForm(e.target);
 
-      if (res.ok) {
+      if (result.ok) {
         alert("Заявка отправлена! Ожидайте звонка 📞");
         e.target.reset();
         props.closeModal();
       } else {
-        alert("Ошибка отправки 😢");
+        alert(result.error || "Ошибка отправки 😢");
       }
-    } catch (error) {
-      alert("Ошибка соединения");
     } finally {
       setLoading(false);
     }

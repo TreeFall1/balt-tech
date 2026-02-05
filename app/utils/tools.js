@@ -103,3 +103,34 @@ export async function removeFromFavorites(productId) {
     return null;
   }
 }
+
+// Отправка заявки из модалки заказа: сбор данных формы и отправка письма
+export async function submitOrderForm(formElement) {
+  // formElement: HTMLFormElement
+  const formData = new FormData(formElement);
+  const data = Object.fromEntries(formData.entries());
+
+  try {
+    const res = await fetch("/api/mail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (res.ok) {
+      return { ok: true };
+    }
+
+    let errorText = "Ошибка отправки";
+    try {
+      errorText = (await res.text()) || errorText;
+    } catch (_) {
+      // ignore
+    }
+    return { ok: false, status: res.status, error: errorText };
+  } catch (error) {
+    return { ok: false, error: "Ошибка соединения" };
+  }
+}

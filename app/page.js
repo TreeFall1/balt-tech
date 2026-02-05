@@ -3,7 +3,7 @@ import Image from "next/image";
 import styles from "./HomePage.module.scss";
 import ProductCard from "@/app/components/ProductCard/ProductCard";
 import {Mail, Phone} from 'lucide-react';
-import {fetchFavoriteProductIds, fetchProducts} from "@/app/utils/tools";
+import {fetchFavoriteProductIds, fetchProducts, submitOrderForm} from "@/app/utils/tools";
 import {useEffect, useState} from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Scrollbar, Mousewheel, FreeMode} from 'swiper/modules';
@@ -14,6 +14,7 @@ import 'swiper/css/scrollbar';
 export default function Home() {
   const [mockProducts, setMockProducts] = useState([]);
   const [cardWidth, setCardWidth] = useState(240)
+  const [formLoading, setFormLoading] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -159,12 +160,31 @@ export default function Home() {
             <div className={styles.containerGrid}>
               <h2>Есть вопросы? Оставьте заявку</h2>
               <div className=""></div>
-              <form className={styles.form}>
-                <input name={'name'} type="text" placeholder="Ваше имя"/>
+              <form
+                className={styles.form}
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setFormLoading(true);
+                  try {
+                    const result = await submitOrderForm(e.target);
+                    if (result.ok) {
+                      alert("Заявка отправлена! Ожидайте звонка 📞");
+                      e.target.reset();
+                    } else {
+                      alert(result.error || "Ошибка отправки 😢");
+                    }
+                  } finally {
+                    setFormLoading(false);
+                  }
+                }}
+              >
+                <input name={'name'} type="text" placeholder="Ваше имя" required/>
                 <input name={'email'} type="email" placeholder="Email"/>
-                <input name={'phone'} type="tel" placeholder="Телефон"/>
+                <input name={'phone'} type="tel" placeholder="Телефон" required/>
                 <textarea name={'message'} placeholder="Сообщение"></textarea>
-                <button className={styles.primaryButton}>Отправить</button>
+                <button className={styles.primaryButton} disabled={formLoading}>
+                  {formLoading ? 'Отправка...' : 'Отправить'}
+                </button>
               </form>
 
               <div style={{position: "relative", overflow: "hidden"}} className={styles.mapPlaceholder}>
