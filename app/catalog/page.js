@@ -3,6 +3,13 @@ import React from "react";
 import Image from "next/image";
 import {catalogData} from "@/app/catalog/data";
 
+export const metadata = {
+  title: "Каталог продукции",
+  description:
+    "Каталог продукции Балтех-Сервис: трубопроводная арматура, фитинги, хомуты, рукава и комплектующие. Сертифицированные товары с быстрой поставкой.",
+  alternates: { canonical: "/catalog" },
+};
+
 
 export default function CatalogPage() {
   return (

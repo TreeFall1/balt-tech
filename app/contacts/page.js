@@ -1,6 +1,13 @@
 import styles from './contacts.module.scss'
 import {Mail, Phone} from "lucide-react";
 
+export const metadata = {
+  title: "Контакты",
+  description:
+    "Контакты компании Балтех-Сервис: адрес офиса в Санкт-Петербурге, режим работы, телефоны и e-mail. Как добраться и карта на Яндекс.Картах.",
+  alternates: { canonical: "/contacts" },
+};
+
 
 export default function ContactsPage(){
   return(

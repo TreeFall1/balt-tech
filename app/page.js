@@ -56,6 +56,27 @@ export default function Home() {
 
   return (
       <>
+        {/* Organization JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'Балтех-Сервис',
+              url: (process.env.NEXT_PUBLIC_SITE_URL || 'https://balttech-service.ru').replace(/\/$/, ''),
+              logo: '/logo.svg',
+              email: 'mailto:bts-sbp@mail.ru',
+              telephone: '+7-812-708-01-08',
+              address: {
+                '@type': 'PostalAddress',
+                addressLocality: 'Санкт-Петербург',
+                streetAddress: 'Коммуны 61А, помещение 7Н, ком. 4',
+                addressCountry: 'RU'
+              },
+            }),
+          }}
+        />
         <section className={styles.companySection}>
           <div className={styles.blurFilter}>
             <div className={styles.companyContainer}>

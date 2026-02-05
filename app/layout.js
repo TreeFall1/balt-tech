@@ -9,9 +9,50 @@ const montserrat  = Montserrat({
   subsets: ['cyrillic', 'latin']
 })
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://balttech-service.ru";
+
 export const metadata = {
-  title: "Балтех-Сервис",
-  description: "Pipes",
+  metadataBase: new URL(siteUrl),
+  applicationName: "Балтех-Сервис",
+  title: {
+    default: "Балтех-Сервис — промышленная трубопроводная арматура и комплектующие",
+    template: "%s — Балтех-Сервис",
+  },
+  description:
+    "Поставки промышленной трубопроводной арматуры, фитингов, хомутов, рукавов и комплектующих. Быстрая доставка по всей России. Сертифицированная продукция.",
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    title: "Балтех-Сервис",
+    siteName: "Балтех-Сервис",
+    description:
+      "Промышленная трубопроводная арматура и комплектующие с быстрой поставкой по России.",
+    locale: "ru_RU",
+    images: [
+      {
+        url: "/og-default.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Балтех-Сервис",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Балтех-Сервис",
+    description:
+      "Промышленная трубопроводная арматура и комплектующие с быстрой поставкой по России.",
+    images: ["/og-default.jpg"],
+  },
+  alternates: {
+    canonical: "/",
+  },
+  themeColor: "#0d0f14",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({ children }) {

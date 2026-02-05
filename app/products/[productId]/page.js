@@ -44,6 +44,33 @@ export default function ProductPage(props) {
 
   return (
       <>
+        {/* Product JSON-LD */}
+        {productData && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Product',
+                name: productData.title,
+                image: images && images.length ? images : [currentImage].filter(Boolean),
+                description: description?.value ?? productData.title,
+                sku: String(productData.id),
+                brand: {
+                  '@type': 'Organization',
+                  name: 'Балтех-Сервис',
+                },
+                offers: {
+                  '@type': 'Offer',
+                  url: `${(process.env.NEXT_PUBLIC_SITE_URL || 'https://balttech-service.ru').replace(/\/$/, '')}/products/${productData.id}`,
+                  priceCurrency: 'RUB',
+                  price: parseFloat(String(productData.price).toString().replace(/[^0-9.,]/g, '').replace(',', '.')) || undefined,
+                  availability: 'https://schema.org/InStock',
+                },
+              }),
+            }}
+          />
+        )}
         {isOrderModalOpen && <OrderModal product={productData?.title} id={productData?.id} isOpen={isOrderModalOpen} closeModal={orderModalHandler} /> }
         {productData ? (
             <div className={styles.productPage}>

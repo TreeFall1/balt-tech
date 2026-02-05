@@ -1,6 +1,13 @@
 import styles from "./AboutPage.module.scss";
 import Image from "next/image";
 
+export const metadata = {
+  title: "О компании",
+  description:
+    "Информация о компании Балтех-Сервис: история, склад, сертификаты и партнёры. Надёжный поставщик промышленной арматуры и комплектующих.",
+  alternates: { canonical: "/about" },
+};
+
 export default function AboutPage() {
   return (
       <main className={styles.main}>
